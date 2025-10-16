@@ -31,9 +31,8 @@ public class MainMenuManager : MonoBehaviour
     // Hàm này cho nút Quit
     public void QuitGame()
     {
-        // In ra thông báo để kiểm tra trong Editor
-        Debug.Log("Đã bấm nút thoát game!");
-        // Lệnh này chỉ hoạt động khi game đã được build thành file .exe
-        Application.Quit();
+        // Instead of quitting, return to the level select screen so the player can change difficulty
+        Debug.Log("Quit pressed - returning to LevelSelect scene to change difficulty");
+        SceneManager.LoadScene("LevelSelect");
     }
 }

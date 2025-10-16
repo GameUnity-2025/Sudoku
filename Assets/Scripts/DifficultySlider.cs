@@ -1,22 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
+// Difficulty slider logic has been removed. This placeholder prevents missing script errors
+// If you want to add new difficulty UI, replace this with the new implementation.
 public class DifficultySlider : MonoBehaviour
 {
-    public Slider difficultySlider;
-
-    public void Start()
-    {
-        //difficultySlider.onValueChanged.AddListener(delegate { SliderChange(); });
-        PlayerSettings.difficulty = (int)difficultySlider.value;
-    }
-
-    public void SliderChange()
-    {
-        PlayerSettings.difficulty = (int) difficultySlider.value;
-    }
-
-
+    // Intentionally left blank to remove old difficulty handling.
 }

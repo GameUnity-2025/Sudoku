@@ -11,6 +11,7 @@ public class Board : MonoBehaviour
     int[,] puzzle = new int[9, 9];
 
     // default numbers removed
+    [SerializeField]
     int difficulty = 15;
 
     public Transform square00, square01, square02, 
@@ -24,8 +25,11 @@ public class Board : MonoBehaviour
     void Start()
     {
         winMenu.SetActive(false);
-        difficulty = PlayerSettings.difficulty;
-        //Debug.Log("Difficulty is: " + difficulty);
+        // If a difficulty was selected via UI (PlayerSettings), use it. Otherwise use the inspector/default.
+        if (PlayerSettings.difficulty > 0)
+        {
+            difficulty = PlayerSettings.difficulty;
+        }
         CreateGrid();
         CreatePuzzle();
 

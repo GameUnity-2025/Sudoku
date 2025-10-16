@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 29999079}
   - component: {fileID: 29999078}
   - component: {fileID: 29999077}
+  - component: {fileID: 29999999}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -157,6 +158,25 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &29999999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 29999076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd6f603276194524a89fbc17a305c720, type: 3}
+  m_Name: DifficultySelector
+  m_EditorClassIdentifier: 
+  easy: 20
+  medium: 35
+  hard: 50
+  veryHard: 60
+  master: 70
+  difficultyLabel: {fileID: 0}
+  autoWireButtons: 1
 --- !u!114 &29999078
 MonoBehaviour:
   m_ObjectHideFlags: 0
