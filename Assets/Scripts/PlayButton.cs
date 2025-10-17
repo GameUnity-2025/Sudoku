@@ -8,11 +8,12 @@ public class PlayButton : MonoBehaviour
 {
     public void StartButtonClicked()
     {
+        Debug.Log("Starting game with difficulty: " + PlayerSettings.difficulty);
         SceneManager.LoadScene("SudokuPlay");
     }
 
     public void MainMenuButtonClicked()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("LevelSelect");
     }
 }
