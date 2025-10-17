@@ -1,38 +1,59 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement; // Thư viện cần thiết để chuyển cảnh (scene)
+using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
+    // --- PHẦN MỚI THÊM VÀO ---
+    // Kéo các Panel từ Hierarchy vào các ô này trong Inspector
+    [SerializeField] private GameObject menuPanel;       // Panel chứa các nút Play, Continue, Setting, Quit
+    [SerializeField] private GameObject settingsPanel;   // Panel chứa các cài đặt (sẽ tạo sau)
+
+    void Start()
+    {
+        // Đảm bảo khi game bắt đầu, chỉ có menu chính được hiển thị
+        menuPanel.SetActive(true);
+        settingsPanel.SetActive(false);
+    }
+
+    // --- CÁC HÀM CŨ VẪN GIỮ NGUYÊN ---
     // Hàm này sẽ được gọi bởi nút Play
     public void PlayGame()
     {
-        // Thay "TenSceneGameCuaBan" bằng tên scene game chính của bạn.
-        // Bạn có thể xem tên scene trong thư mục Assets/Scenes.
-        // Dựa vào hình của bạn, có thể tên scene là "Sudoku" hoặc "Main"
-        SceneManager.LoadScene("LevelSelect"); // <<=== THAY ĐỔI TÊN SCENE Ở ĐÂY
-        Debug.Log("Chuyển đến màn hình chơi game!");
+        SceneManager.LoadScene("LevelSelect");
+        Debug.Log("Chuyển đến màn hình chọn độ khó!");
     }
 
     // Hàm này cho nút Continue
     public void ContinueGame()
     {
-        // Chức năng này phức tạp, cần hệ thống lưu game.
-        // Tạm thời chúng ta sẽ in ra một thông báo.
         Debug.Log("Nút Continue được bấm! (Chưa có chức năng)");
     }
 
-    // Hàm này cho nút Settings
-    public void OpenSettings()
+    // --- HÀM SETTINGS ĐƯỢC NÂNG CẤP ---
+    // Hàm này cho nút Settings, giờ nó sẽ mở panel cài đặt
+    public void OpenSettingsPanel() // Đổi tên từ OpenSettings để rõ ràng hơn
     {
-        // Tương tự, chức năng này cần một màn hình cài đặt riêng.
-        Debug.Log("Nút Settings được bấm! (Chưa có chức năng)");
+        menuPanel.SetActive(false);     // Ẩn panel menu chính
+        settingsPanel.SetActive(true);    // Hiện panel cài đặt
+        Debug.Log("Đã mở màn hình cài đặt!");
     }
+
+    // --- HÀM MỚI ĐỂ ĐÓNG CÀI ĐẶT ---
+    // Hàm này sẽ được dùng cho nút "Back" hoặc "Quay Lại" trong màn hình cài đặt
+    public void CloseSettingsPanel()
+    {
+        settingsPanel.SetActive(false);   // Ẩn panel cài đặt
+        menuPanel.SetActive(true);      // Hiện lại panel menu chính
+    }
+
 
     // Hàm này cho nút Quit
     public void QuitGame()
     {
-        // Instead of quitting, return to the level select screen so the player can change difficulty
-        Debug.Log("Quit pressed - returning to LevelSelect scene to change difficulty");
-        SceneManager.LoadScene("LevelSelect");
+        Debug.Log("Đã bấm nút thoát game!");
+        Application.Quit(); // Dùng Application.Quit() để thoát game khi đã build
+        // SceneManager.LoadScene("LevelSelect"); // Dòng này có thể không cần thiết nữa nếu ý định là thoát game
     }
+
+
 }
