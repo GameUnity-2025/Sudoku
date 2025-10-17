@@ -62,4 +62,10 @@ public class SudokuCell : MonoBehaviour
         }
         board.UpdatePuzzle(row, col, value);
     }
+
+    // Public getter for the current value so UndoManager can inspect previous state
+    public int GetValue()
+    {
+        return value;
+    }
 }
