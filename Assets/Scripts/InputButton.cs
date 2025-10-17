@@ -28,9 +28,27 @@ public class InputButton : MonoBehaviour
 
     public void ClickedButton(int num)
     {
-        lastCell.UpdateValue(num);
-        wrongText.SetActive(false);
+        // Record the change so it can be undone later. If UndoManager isn't present,
+        // fall back to applying the value directly to avoid a NullReferenceException.
+        if (lastCell != null)
+        {
+            Debug.Log($"InputButton: ClickedButton({num}) for lastCell.");
+            // Use helper that ensures UndoManager exists and records
+            UndoManager.EnsureAndRecord(lastCell, num);
+        }
+
+        if (wrongText != null)
+            wrongText.SetActive(false);
+
         this.gameObject.SetActive(false);
+    }
+
+    // Called by the UI "undo/back" button
+    public void ClickedUndo()
+    {
+        // Perform an undo of the last recorded action
+        Debug.Log("InputButton: ClickedUndo()");
+        UndoManager.EnsureAndUndo();
     }
 
 
