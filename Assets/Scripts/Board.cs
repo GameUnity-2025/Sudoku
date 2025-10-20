@@ -21,6 +21,10 @@ public class Board : MonoBehaviour
     public GameObject winMenu;
     [SerializeField] GameObject loseText;
 
+    // Store all cells for error checking
+    private SudokuCell[,] allCells = new SudokuCell[9, 9];
+    private bool autoCheckErrors = true; // Can be toggled by ShowMistakesButton
+
 // Start is called before the first frame update
     void Start()
     {
@@ -303,6 +307,9 @@ public class Board : MonoBehaviour
                 sudokuCell.SetValues(i, j, puzzle[i, j], i + "," + j, this);
                 newButton.name = i.ToString() + j.ToString();
 
+                // Store cell reference for error checking
+                allCells[i, j] = sudokuCell;
+
                 if (i < 3)
                 {
                     if (j < 3)
@@ -358,6 +365,97 @@ public class Board : MonoBehaviour
     public void UpdatePuzzle(int row, int col, int value)
     {
         puzzle[row, col] = value;
+        // Automatically check for errors after each update if enabled
+        if (autoCheckErrors)
+        {
+            CheckAndHighlightErrors();
+        }
+    }
+
+    // Enable or disable automatic error checking
+    public void SetAutoCheckErrors(bool enabled)
+    {
+        autoCheckErrors = enabled;
+        if (!enabled)
+        {
+            ClearAllErrors();
+        }
+        else
+        {
+            CheckAndHighlightErrors();
+        }
+    }
+
+    // Check for errors and highlight conflicting cells
+    public void CheckAndHighlightErrors()
+    {
+        // First, clear all error highlights
+        ClearAllErrors();
+
+        // Check each cell for conflicts
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                if (puzzle[i, j] != 0 && puzzle[i, j] != grid[i, j])
+                {
+                    // This cell has a wrong value, highlight it and all conflicting cells
+                    allCells[i, j].HighlightError();
+                    HighlightConflictingCells(i, j, puzzle[i, j]);
+                }
+            }
+        }
+    }
+
+    // Highlight all cells in the same row and column that have conflicts
+    private void HighlightConflictingCells(int row, int col, int value)
+    {
+        // Highlight cells in the same row with the same value
+        for (int j = 0; j < 9; j++)
+        {
+            if (j != col && puzzle[row, j] == value)
+            {
+                allCells[row, j].HighlightError();
+            }
+        }
+
+        // Highlight cells in the same column with the same value
+        for (int i = 0; i < 9; i++)
+        {
+            if (i != row && puzzle[i, col] == value)
+            {
+                allCells[i, col].HighlightError();
+            }
+        }
+
+        // Highlight cells in the same 3x3 square with the same value
+        int squareRow = (row / 3) * 3;
+        int squareCol = (col / 3) * 3;
+        for (int i = squareRow; i < squareRow + 3; i++)
+        {
+            for (int j = squareCol; j < squareCol + 3; j++)
+            {
+                if ((i != row || j != col) && puzzle[i, j] == value)
+                {
+                    allCells[i, j].HighlightError();
+                }
+            }
+        }
+    }
+
+    // Clear all error highlights
+    public void ClearAllErrors()
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                if (allCells[i, j] != null)
+                {
+                    allCells[i, j].ClearError();
+                }
+            }
+        }
     }
 
     public void CheckComplete()
