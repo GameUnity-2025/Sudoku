@@ -26,8 +26,5 @@ public class NoteButton : MonoBehaviour
             noteIcon.color = isNoteMode ? activeColor : inactiveColor;
     }
 
-    public static bool IsNoteModeActive()
-    {
-        return isNoteMode;
-    }
+    public static bool IsNoteModeActive() => isNoteMode;
 }

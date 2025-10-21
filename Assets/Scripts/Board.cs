@@ -25,7 +25,13 @@ public class Board : MonoBehaviour
     private SudokuCell[,] allCells = new SudokuCell[9, 9];
     private bool autoCheckErrors = true; // Can be toggled by ShowMistakesButton
 
-// Start is called before the first frame update
+
+    // === Added for Note Mode ===
+    private bool isNoteMode = false; // true = đang ghi chú
+    private SudokuCell selectedCell = null;
+    // ============================
+
+    // Start is called before the first frame update
     void Start()
     {
         winMenu.SetActive(false);
@@ -39,6 +45,47 @@ public class Board : MonoBehaviour
 
         CreateButtons();
     }
+
+    // === Added for Note Mode ===
+   public void ToggleNoteMode()
+{
+    isNoteMode = !isNoteMode;
+    NoteButton.isNoteMode = isNoteMode; // đồng bộ với nút
+    Debug.Log("Note Mode: " + (isNoteMode ? "ON" : "OFF"));
+}
+
+
+    public bool IsNoteMode()
+    {
+        return isNoteMode;
+    }
+
+    public void SetSelectedCell(SudokuCell cell)
+    {
+        selectedCell = cell;
+    }
+
+    public SudokuCell GetSelectedCell()
+    {
+        return selectedCell;
+    }
+
+    public void InputNumber(int number)
+    {
+        if (selectedCell == null) return;
+
+        if (isNoteMode)
+        {
+            selectedCell.ToggleNote(number);
+        }
+        else
+        {
+            selectedCell.SetValue(number);
+            UpdatePuzzle(selectedCell.GetRow(), selectedCell.GetCol(), number);
+        }
+    }
+    // ============================
+
 
     // Update is called once per frame
     void Update()
@@ -296,7 +343,7 @@ public class Board : MonoBehaviour
         }
     }
 
-        void CreateButtons()
+    void CreateButtons()
     {
         for (int i = 0; i < 9; i++)
         {
@@ -485,4 +532,12 @@ public class Board : MonoBehaviour
         }
         return true;
     }
+
+
+    // === Added for number buttons ===
+public void OnNumberButtonClicked(int number)
+{
+    InputNumber(number);
+}
+
 }
