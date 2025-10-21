@@ -7,11 +7,9 @@ public class DifficultySelector : MonoBehaviour
 {
     // Suggested mapping: these numbers represent how many cells to remove (or another metric used by Board)
     // Adjust as needed to match the game's intended difficulty scale.
-    public int easy = 20;
-    public int medium = 35;
-    public int hard = 50;
-    public int veryHard = 60;
-    public int master = 70;
+    public int easy = 50;
+    public int medium = 90;
+    public int hard = 120;
 
     [Tooltip("Optional UI Text to show the currently selected difficulty (e.g. 'Easy')")]
     public Text difficultyLabel;
@@ -71,22 +69,10 @@ public class DifficultySelector : MonoBehaviour
                 b.onClick.AddListener(SelectMedium);
                 b.onClick.AddListener(UpdateLabelFromCurrent);
             }
-            else if (s.Contains("very hard") || s.Contains("veryhard") || s.Contains("very-hard"))
-            {
-                b.onClick.RemoveAllListeners();
-                b.onClick.AddListener(SelectVeryHard);
-                b.onClick.AddListener(UpdateLabelFromCurrent);
-            }
             else if (s.Contains("hard") && !s.Contains("very"))
             {
                 b.onClick.RemoveAllListeners();
                 b.onClick.AddListener(SelectHard);
-                b.onClick.AddListener(UpdateLabelFromCurrent);
-            }
-            else if (s.Contains("master"))
-            {
-                b.onClick.RemoveAllListeners();
-                b.onClick.AddListener(SelectMaster);
                 b.onClick.AddListener(UpdateLabelFromCurrent);
             }
             else if (s.Contains("back"))
@@ -233,8 +219,6 @@ public class DifficultySelector : MonoBehaviour
         if (val == easy) return "Easy";
         if (val == medium) return "Medium";
         if (val == hard) return "Hard";
-        if (val == veryHard) return "Very Hard";
-        if (val == master) return "Master";
         return val.ToString();
     }
 
@@ -257,19 +241,5 @@ public class DifficultySelector : MonoBehaviour
         PlayerSettings.SetDifficulty(hard);
         UpdateLabelFromCurrent();
         Debug.Log("Difficulty set: Hard (" + hard + ")");
-    }
-
-    public void SelectVeryHard()
-    {
-        PlayerSettings.SetDifficulty(veryHard);
-        UpdateLabelFromCurrent();
-        Debug.Log("Difficulty set: Very Hard (" + veryHard + ")");
-    }
-
-    public void SelectMaster()
-    {
-        PlayerSettings.SetDifficulty(master);
-        UpdateLabelFromCurrent();
-        Debug.Log("Difficulty set: Master (" + master + ")");
     }
 }
