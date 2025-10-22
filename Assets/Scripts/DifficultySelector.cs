@@ -23,7 +23,7 @@ public class DifficultySelector : MonoBehaviour
     public UnityEngine.UI.Button confirmYesButton;
     public UnityEngine.UI.Button confirmNoButton;
     public UnityEngine.UI.Text confirmTextUI;
-    public string confirmMessage = "Return to Main Menu? Your progress will be lost.";
+    public string confirmMessage = "Return to Main Menu?";
 
     void Start()
     {

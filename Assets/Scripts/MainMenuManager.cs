@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -13,6 +14,28 @@ public class MainMenuManager : MonoBehaviour
         // Đảm bảo khi game bắt đầu, chỉ có menu chính được hiển thị
         menuPanel.SetActive(true);
         settingsPanel.SetActive(false);
+        // Try to auto-wire Continue button if it's present but not assigned in the Inspector
+        try
+        {
+            var go = GameObject.Find("ContinueButton");
+            if (go != null)
+            {
+                var btn = go.GetComponent<Button>();
+                if (btn != null)
+                {
+                    // Remove duplicates and add our listener
+                    btn.onClick.RemoveListener(ContinueGame);
+                    btn.onClick.AddListener(ContinueGame);
+#if UNITY_EDITOR
+                    Debug.Log("MainMenuManager: Auto-wired ContinueButton to ContinueGame().");
+#endif
+                }
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning("MainMenuManager: Failed to auto-wire ContinueButton: " + e.Message);
+        }
     }
 
     // --- CÁC HÀM CŨ VẪN GIỮ NGUYÊN ---
@@ -26,7 +49,17 @@ public class MainMenuManager : MonoBehaviour
     // Hàm này cho nút Continue
     public void ContinueGame()
     {
-        Debug.Log("Nút Continue được bấm! (Chưa có chức năng)");
+        // If a saved game exists, load the gameplay scene which will read the save on Start
+        if (SaveSystem.HasSave())
+        {
+            Debug.Log("Continue: Save found, loading last game.");
+            SceneManager.LoadScene("SudokuPlay");
+        }
+        else
+        {
+            Debug.Log("Continue: No save found, going to LevelSelect.");
+            SceneManager.LoadScene("LevelSelect");
+        }
     }
 
     // --- HÀM SETTINGS ĐƯỢC NÂNG CẤP ---

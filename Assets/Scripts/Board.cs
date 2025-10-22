@@ -40,8 +40,41 @@ public class Board : MonoBehaviour
         {
             difficulty = PlayerSettings.difficulty;
         }
-        CreateGrid();
-        CreatePuzzle();
+
+        // If the player explicitly selected a new difficulty recently, force a new game
+        if (PlayerSettings.forceNewGame)
+        {
+            Debug.Log("Board: forceNewGame is true — creating new puzzle for difficulty " + difficulty);
+            CreateGrid();
+            CreatePuzzle();
+            PlayerSettings.forceNewGame = false; // reset flag
+            // Save initial state immediately
+            SaveSystem.SaveBoard(grid, puzzle, difficulty);
+        }
+        else
+        {
+            // Try to load saved game first
+            var save = SaveSystem.LoadBoard();
+            if (save != null)
+            {
+                Debug.Log("Board: Loading saved game.");
+                // restore grid and puzzle
+                for (int i = 0, idx = 0; i < 9; i++)
+                {
+                    for (int j = 0; j < 9; j++, idx++)
+                    {
+                        grid[i, j] = save.gridFlat[idx];
+                        puzzle[i, j] = save.puzzleFlat[idx];
+                    }
+                }
+                difficulty = save.difficulty;
+            }
+            else
+            {
+                CreateGrid();
+                CreatePuzzle();
+            }
+        }
 
         CreateButtons();
     }
@@ -417,6 +450,8 @@ public class Board : MonoBehaviour
         {
             CheckAndHighlightErrors();
         }
+        // Save progress after each change
+        SaveSystem.SaveBoard(grid, puzzle, difficulty);
     }
 
     // Enable or disable automatic error checking
