@@ -24,9 +24,16 @@ public class SudokuCell : MonoBehaviour
 
     private void Awake()
     {
+        cellImage = GetComponent<Image>();
+
+        if (cellImage != null)
+        {
+            originalColor = Color.white;     // Màu trắng làm nền mặc định
+            cellImage.color = originalColor; // Áp dụng ngay
+        }
+
         if (notesContainer != null)
         {
-            // Tạo 9 note Text nhỏ cho container
             for (int i = 0; i < 9; i++)
             {
                 GameObject noteObj = Instantiate(notePrefab, notesContainer.transform);
@@ -34,8 +41,7 @@ public class SudokuCell : MonoBehaviour
                 noteText.text = "";
                 noteTexts.Add(noteText);
             }
-
-            notesContainer.SetActive(false); // ẩn mặc định
+            notesContainer.SetActive(false);
         }
     }
 
@@ -46,35 +52,33 @@ public class SudokuCell : MonoBehaviour
         id = _id;
         board = _board;
 
-        cellImage = GetComponent<Image>();
-        if (cellImage != null)
-            originalColor = cellImage.color;
+        if (cellImage == null) cellImage = GetComponent<Image>();
+
+        // Luôn đặt màu trắng cho tất cả các ô
+        originalColor = Color.white;
+        cellImage.color = originalColor;
 
         if (_value != 0)
         {
             value = _value;
             t.text = value.ToString();
+            t.color = Color.black;
             notesContainer.SetActive(false);
-            GetComponent<Button>().interactable = false;
+
+            // Cho ô cố định (có số sẵn) vẫn có thể click highlight nhưng không đổi số
+            GetComponent<Button>().interactable = true;
         }
         else
         {
             value = 0;
             t.text = "";
-            t.color = new Color32(0, 102, 187, 255);
+            t.color = new Color32(0, 102, 187, 255); // Màu chữ ô nhập
         }
     }
 
     public void ButtonClicked()
     {
-        if (NoteButton.isNoteMode && value == 0)
-        {
-            InputButton.instance.ActivateInputButton(this);
-        }
-        else
-        {
-            InputButton.instance.ActivateInputButton(this);
-        }
+        InputButton.instance.ActivateInputButton(this);
     }
 
     public void UpdateValue(int newValue)
@@ -85,13 +89,13 @@ public class SudokuCell : MonoBehaviour
             return;
         }
 
-        // Nếu nhập giá trị thật thì xóa hết note
         ClearAllNotes();
-
         value = newValue;
+
         if (value != 0)
         {
             t.text = value.ToString();
+            t.color = Color.black;
             notesContainer.SetActive(false);
         }
         else
@@ -130,7 +134,6 @@ public class SudokuCell : MonoBehaviour
     }
 
     public int GetValue() => value;
-
     public int GetRow() => row;
     public int GetCol() => col;
 
@@ -153,36 +156,30 @@ public class SudokuCell : MonoBehaviour
     }
 
     // ==== Compatibility wrapper methods for Board.cs ====
-
-public void ToggleNote(int number)
-{
-    ToggleNoteNumber(number); // gọi đúng hàm bạn đã có
-}
-
-public void SetValue(int newValue)
-{
-    UpdateValue(newValue); // gọi đúng hàm UpdateValue gốc
-}
-
-
-// Khi người chơi click vào ô Sudoku
-public void OnCellClicked()
-{
-    // Báo cho Board biết ô này đang được chọn
-    board.SetSelectedCell(this);
-
-    // (Tuỳ chọn) có thể highlight ô này để dễ thấy
-    if (cellImage != null)
+    public void ToggleNote(int number)
     {
-        cellImage.color = new Color(0.8f, 0.9f, 1f); // xanh nhạt
-        Invoke(nameof(ResetHighlight), 0.3f); // tự reset sau 0.3s
+        ToggleNoteNumber(number);
     }
-}
 
-private void ResetHighlight()
-{
-    if (!isError && cellImage != null)
-        cellImage.color = originalColor;
-}
+    public void SetValue(int newValue)
+    {
+        UpdateValue(newValue);
+    }
 
+    public void OnCellClicked()
+    {
+        board.SetSelectedCell(this);
+
+        if (cellImage != null)
+        {
+            cellImage.color = new Color(0.8f, 0.9f, 1f); // xanh nhạt khi chọn
+            Invoke(nameof(ResetHighlight), 0.3f);
+        }
+    }
+
+    private void ResetHighlight()
+    {
+        if (!isError && cellImage != null)
+            cellImage.color = originalColor;
+    }
 }
