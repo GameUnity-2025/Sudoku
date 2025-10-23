@@ -77,6 +77,12 @@ public class Board : MonoBehaviour
         }
 
         CreateButtons();
+        // If automatic error checking is enabled, run it once after creating all cells
+        // so that any errors from a loaded save (Continue) are highlighted immediately.
+        if (autoCheckErrors)
+        {
+            CheckAndHighlightErrors();
+        }
     }
 
     // === Added for Note Mode ===
