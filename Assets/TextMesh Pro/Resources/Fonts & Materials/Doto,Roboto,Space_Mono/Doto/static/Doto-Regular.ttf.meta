@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 9343f679c68bb2948832dc80d05d3b93
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Doto
+  fontNames:
+  - Doto
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: b26368bc59b07244f83041caba148fc8, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

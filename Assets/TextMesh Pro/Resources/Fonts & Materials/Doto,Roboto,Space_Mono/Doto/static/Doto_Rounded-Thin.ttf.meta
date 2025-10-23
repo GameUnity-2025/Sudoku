@@ -1,0 +1,27 @@
+fileFormatVersion: 2
+guid: 5afaf5090117c4b4db0f6cdcc6e58aec
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Doto Rounded
+  fontNames:
+  - Doto Rounded
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 72caac83c959fc5438be366647e810dd, type: 3}
+  - {fileID: 12800000, guid: 24f67bd319a55bb44bde277f305a90ea, type: 3}
+  - {fileID: 12800000, guid: 5390f8d6bfab3ba458f364bc17e6d532, type: 3}
+  - {fileID: 12800000, guid: 062952896a9285d48ba80f6750d38c0f, type: 3}
+  - {fileID: 12800000, guid: 0a6d12ee76ac6734bb115803afef63e3, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

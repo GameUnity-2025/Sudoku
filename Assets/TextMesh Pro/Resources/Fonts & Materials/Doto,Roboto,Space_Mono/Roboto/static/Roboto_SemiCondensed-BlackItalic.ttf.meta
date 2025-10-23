@@ -1,0 +1,30 @@
+fileFormatVersion: 2
+guid: b4650de5cd2dad74fa6b10bc16a76def
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Roboto SemiCondensed
+  fontNames:
+  - Roboto SemiCondensed
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 52a440347ffa61c46af5c6c607433ade, type: 3}
+  - {fileID: 12800000, guid: 13885b9657ccb98438dd928b970f6323, type: 3}
+  - {fileID: 12800000, guid: b0215858605c524438df2c0cad1f41e0, type: 3}
+  - {fileID: 12800000, guid: d243d5baf93f99a42985eded31c45df6, type: 3}
+  - {fileID: 12800000, guid: 41127aecb37dbc1478d2f1993141e0fc, type: 3}
+  - {fileID: 12800000, guid: a154a48d0d123a24993aa068cf80f300, type: 3}
+  - {fileID: 12800000, guid: 9203860f103ad1241ad95ba407d11d26, type: 3}
+  - {fileID: 12800000, guid: 32c7b54fa150e09439e89915e0e5d315, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
