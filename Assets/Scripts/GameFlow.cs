@@ -12,7 +12,7 @@ public class GameFlow : MonoBehaviour
         int score = Mathf.Max(0, 10000 - Mathf.RoundToInt(elapsed * 20f));
 
         GameStats.Score = score;
-        GameStats.ElapsedSec = elapsed;
+        GameStats.PlayTime = elapsed;
 
         SceneManager.LoadScene("WinScene");
     }
