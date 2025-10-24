@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using TMPro;
-using UnityEngine.SceneManagement;
 
 public class GameStatsManager : MonoBehaviour
 {
@@ -40,6 +39,10 @@ public class GameStatsManager : MonoBehaviour
         UpdateAllTimeUI();
         UpdateMistakesUI();
         Time.timeScale = 1f;
+
+        // 🔴 Đảm bảo panel GameOver ẩn khi mới vào game
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(false);
     }
 
     private void Update()
@@ -82,26 +85,17 @@ public class GameStatsManager : MonoBehaviour
             GameOver();
     }
 
-    // ✅ Giữ lại phiên bản GameOver này thôi
+    // ✅ CHỈ BẬT PANEL, KHÔNG LOAD SCENE
     private void GameOver()
     {
         isGameFinished = true;
         isPaused = true;
-        Time.timeScale = 0f; // dừng toàn bộ game
+        Time.timeScale = 0f; // Dừng mọi hoạt động trong game
 
         if (gameOverPanel != null)
             gameOverPanel.SetActive(true);
 
         Debug.Log("❌ Game Over! Too many mistakes.");
-
-        // 🕹️ Chuyển scene sau 1s
-        Invoke(nameof(LoadGameOverScene), 1f);
-    }
-
-    private void LoadGameOverScene()
-    {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene("WinScense"); // ⚠️ đổi tên scene thành WinScense
     }
 
     public void CompleteGame()
@@ -127,6 +121,7 @@ public class GameStatsManager : MonoBehaviour
         UpdateAllTimeUI();
 
         Debug.Log($"🎉 Game Completed | Score: {currentScore} | High Score: {highScore}");
+        // ✅ Bạn có thể bật một WinPanel tương tự nếu cần
     }
 
     private void UpdateAllTimeUI()
