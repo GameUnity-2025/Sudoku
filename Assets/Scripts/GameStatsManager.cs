@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameStatsManager : MonoBehaviour
 {
@@ -8,12 +9,12 @@ public class GameStatsManager : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private TextMeshProUGUI allTimeText;   // Hiển thị điểm cao nhất (All Time)
     [SerializeField] private TextMeshProUGUI mistakesText;  // Hiển thị số lỗi sai
-    [SerializeField] private GameObject pauseButton;        // Nút Pause (icon hình tròn)
-    [SerializeField] private GameObject gameOverPanel;      // (tuỳ chọn) panel hiện khi thua
+    [SerializeField] private GameObject pauseButton;        // Nút Pause
+    [SerializeField] private GameObject gameOverPanel;      // Panel hiện khi thua
 
     [Header("Game Settings")]
     [SerializeField] private int maxMistakes = 3;
-    [SerializeField] private string difficulty = "Easy";    // Có thể nhận từ PlayerPrefs hoặc DifficultySelector
+    [SerializeField] private string difficulty = "Easy";    // Nhận từ PlayerPrefs
 
     private float playTime = 0f;
     private int mistakeCount = 0;
@@ -38,7 +39,7 @@ public class GameStatsManager : MonoBehaviour
 
         UpdateAllTimeUI();
         UpdateMistakesUI();
-        Time.timeScale = 1f; // đảm bảo game chạy bình thường khi start
+        Time.timeScale = 1f;
     }
 
     private void Update()
@@ -47,11 +48,10 @@ public class GameStatsManager : MonoBehaviour
             playTime += Time.deltaTime;
     }
 
-    // 🧮 Tính điểm dựa theo độ khó, thời gian, lỗi
     private int CalculateScore()
     {
         int baseScore = 0;
-        int maxTime = 600; // Giới hạn 10 phút
+        int maxTime = 600; // 10 phút
         switch (difficulty)
         {
             case "Easy": baseScore = 1000; break;
@@ -65,19 +65,16 @@ public class GameStatsManager : MonoBehaviour
         return Mathf.Max(0, baseScore + timeBonus - mistakePenalty);
     }
 
-    // ❌ Cập nhật giao diện lỗi
     private void UpdateMistakesUI()
     {
         if (mistakesText != null)
             mistakesText.text = $"Mistakes: {mistakeCount}/{maxMistakes}";
     }
 
-    // ❌ Gọi khi người chơi nhập sai
     public void AddMistake()
     {
         if (isPaused || isGameFinished) return;
 
-        // ✅ chỉ cộng 1 lỗi/lần
         mistakeCount++;
         UpdateMistakesUI();
 
@@ -85,7 +82,7 @@ public class GameStatsManager : MonoBehaviour
             GameOver();
     }
 
-    // 🔚 Khi sai quá giới hạn
+    // ✅ Giữ lại phiên bản GameOver này thôi
     private void GameOver()
     {
         isGameFinished = true;
@@ -96,9 +93,17 @@ public class GameStatsManager : MonoBehaviour
             gameOverPanel.SetActive(true);
 
         Debug.Log("❌ Game Over! Too many mistakes.");
+
+        // 🕹️ Chuyển scene sau 1s
+        Invoke(nameof(LoadGameOverScene), 1f);
     }
 
-    // ✅ Khi hoàn thành Sudoku
+    private void LoadGameOverScene()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("WinScense"); // ⚠️ đổi tên scene thành WinScense
+    }
+
     public void CompleteGame()
     {
         if (isGameFinished) return;
@@ -124,55 +129,46 @@ public class GameStatsManager : MonoBehaviour
         Debug.Log($"🎉 Game Completed | Score: {currentScore} | High Score: {highScore}");
     }
 
-    // 🏆 Cập nhật hiển thị điểm cao nhất
     private void UpdateAllTimeUI()
     {
         if (allTimeText != null)
             allTimeText.text = $"All Time: {highScore}";
     }
 
-    // 🔘 Tạm dừng game
     public void PauseGame()
     {
         if (isPaused || isGameFinished) return;
 
         isPaused = true;
-        Time.timeScale = 0f; // dừng game thực tế
+        Time.timeScale = 0f;
 
-        // ẩn menu nhập số (nếu có)
         if (InputButton.instance != null)
             InputButton.instance.gameObject.SetActive(false);
 
         Debug.Log("⏸ Game Paused");
     }
 
-    // ▶️ Tiếp tục game
     public void ResumeGame()
     {
         if (!isPaused || isGameFinished) return;
 
         isPaused = false;
-        Time.timeScale = 1f; // tiếp tục game
+        Time.timeScale = 1f;
 
         Debug.Log("▶️ Game Resumed");
     }
 
-    // 🔄 Toggle khi bấm nút Pause
     public void TogglePause()
     {
         if (isPaused) ResumeGame();
         else PauseGame();
     }
 
-    // ⚙️ Kiểm tra có thể nhập ô Sudoku không
     public bool CanInput()
     {
         return !isPaused && !isGameFinished;
     }
 
-    // ✅ Getter cho số lỗi hiện tại
     public int GetMistakeCount() => mistakeCount;
-
-    // ✅ Getter cho giới hạn lỗi tối đa
     public int GetMaxMistakes() => maxMistakes;
 }
