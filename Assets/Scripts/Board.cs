@@ -9,6 +9,7 @@ public class Board : MonoBehaviour
     // Create the intital Sudoku Grid
     int[,] grid = new int[9,9];
     int[,] puzzle = new int[9, 9];
+    private bool gameOver = false;
 
     // default numbers removed
     [SerializeField]
@@ -443,16 +444,41 @@ public class Board : MonoBehaviour
     }
 
     public void UpdatePuzzle(int row, int col, int value)
+{
+    if (gameOver) return;
+
+    int oldValue = puzzle[row, col];
+    puzzle[row, col] = value;
+
+    SaveSystem.SaveBoard(grid, puzzle, difficulty);
+
+    if (autoCheckErrors)
+        CheckAndHighlightErrors();
+
+    // ✅ Nếu nhập sai so với đáp án (và khác giá trị cũ)
+    if (grid[row, col] != 0 && value != grid[row, col] && oldValue != value)
     {
-        puzzle[row, col] = value;
-        // Automatically check for errors after each update if enabled
-        if (autoCheckErrors)
+        GameStatsManager.instance.AddMistake();
+        if (GameStatsManager.instance.GetMistakeCount() >= 3)
         {
-            CheckAndHighlightErrors();
+            gameOver = true;
+            loseText.SetActive(true);
+            GameStatsManager.instance.PauseGame(); // ⛔ dừng game
+            Debug.Log("❌ Game Over Triggered From Board!");
+            return;
         }
-        // Save progress after each change
-        SaveSystem.SaveBoard(grid, puzzle, difficulty);
     }
+
+    // ✅ Nếu hoàn thành
+    if (CheckGrid())
+    {
+        gameOver = true;
+        GameStatsManager.instance.CompleteGame();
+        winMenu.SetActive(true);
+    }
+}
+
+
 
     // Enable or disable automatic error checking
     public void SetAutoCheckErrors(bool enabled)
@@ -545,11 +571,14 @@ public class Board : MonoBehaviour
         if (CheckGrid())
         {
             winMenu.SetActive(true);
+            gameOver = true;
+        GameStatsManager.instance.CompleteGame(); // ✅ cộng điểm
         }
         else
         {
             loseText.SetActive(true);
             //Debug.Log("Loser");
+            GameStatsManager.instance.AddMistake(); // ❌ thêm lỗi
         }
     }
 
@@ -574,5 +603,10 @@ public void OnNumberButtonClicked(int number)
 {
     InputNumber(number);
 }
+public int[,] GetSolutionGrid()
+{
+    return grid;
+}
+
 
 }
