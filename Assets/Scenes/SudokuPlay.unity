@@ -5691,7 +5691,7 @@ MonoBehaviour:
   difficulty: Easy
   separateHighScoreByDifficulty: 0
   playSceneName: SudokuPlay
-  winSceneName: WinScene
+  winSceneName: WinScense
   menuSceneName: MainMenu
   winSceneDelaySeconds: 0.7
 --- !u!1 &1784062751
