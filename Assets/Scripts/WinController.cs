@@ -45,9 +45,8 @@ public class WinController : MonoBehaviour
         // Xử lý nút New Game
         if (newGameButton)
             newGameButton.onClick.AddListener(() =>
-            {
-                // Đổi "YourGameplayScene" thành scene bạn muốn quay lại
-                SceneManager.LoadScene("YourGameplayScene");
+            {        
+                SceneManager.LoadScene("LevelSelect");
             });
     }
 }
