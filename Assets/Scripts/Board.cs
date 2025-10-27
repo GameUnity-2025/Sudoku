@@ -25,6 +25,11 @@ public class Board : MonoBehaviour
     // Store all cells for error checking
     private SudokuCell[,] allCells = new SudokuCell[9, 9];
     private bool autoCheckErrors = true; // Can be toggled by ShowMistakesButton
+    [Header("Hover Highlight Settings")]
+    [SerializeField] private Color hoverLineColor = new Color(0.92f, 0.96f, 1f);
+    [SerializeField] private Color hoverCenterColor = new Color(0.8f, 0.88f, 1f);
+    private readonly List<SudokuCell> hoverHighlightedCells = new List<SudokuCell>();
+    private SudokuCell currentHoveredCell;
 
 
     // === Added for Note Mode ===
@@ -607,6 +612,79 @@ public int[,] GetSolutionGrid()
 {
     return grid;
 }
+
+    public void HighlightRowAndColumn(int row, int col, SudokuCell centerCell)
+    {
+        if (centerCell == null)
+        {
+            return;
+        }
+
+        ClearHoverHighlight();
+        currentHoveredCell = centerCell;
+
+        for (int c = 0; c < 9; c++)
+        {
+            SudokuCell cell = allCells[row, c];
+            if (cell == null)
+            {
+                continue;
+            }
+
+            bool isCenter = cell == centerCell;
+            cell.ApplyHoverHighlight(hoverLineColor, hoverCenterColor, isCenter);
+            if (!hoverHighlightedCells.Contains(cell))
+            {
+                hoverHighlightedCells.Add(cell);
+            }
+        }
+
+        for (int r = 0; r < 9; r++)
+        {
+            SudokuCell cell = allCells[r, col];
+            if (cell == null)
+            {
+                continue;
+            }
+
+            bool isCenter = cell == centerCell;
+            cell.ApplyHoverHighlight(hoverLineColor, hoverCenterColor, isCenter);
+            if (!hoverHighlightedCells.Contains(cell))
+            {
+                hoverHighlightedCells.Add(cell);
+            }
+        }
+    }
+
+    public void OnCellHoverExit(SudokuCell cell)
+    {
+        if (cell == null)
+        {
+            return;
+        }
+
+        if (currentHoveredCell == cell)
+        {
+            ClearHoverHighlight();
+        }
+    }
+
+    private void ClearHoverHighlight()
+    {
+        if (hoverHighlightedCells.Count == 0)
+        {
+            currentHoveredCell = null;
+            return;
+        }
+
+        foreach (SudokuCell cell in hoverHighlightedCells)
+        {
+            cell?.ClearHoverHighlight();
+        }
+
+        hoverHighlightedCells.Clear();
+        currentHoveredCell = null;
+    }
 
 
 }

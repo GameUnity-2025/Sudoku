@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SudokuCell : MonoBehaviour
+public class SudokuCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private Board board;
     private int row;
@@ -21,6 +22,10 @@ public class SudokuCell : MonoBehaviour
     private Color originalColor;
     private Color errorColor = new Color(1f, 0.7f, 0.7f);
     private bool isError = false;
+    private bool isHovered = false;
+    private bool isCenterHovered = false;
+    private Color hoverLineColor;
+    private Color hoverCenterColor;
 
     private void Awake()
     {
@@ -141,8 +146,15 @@ public class SudokuCell : MonoBehaviour
     {
         if (cellImage != null)
         {
-            cellImage.color = errorColor;
             isError = true;
+            if (isHovered)
+            {
+                cellImage.color = isCenterHovered ? hoverCenterColor : hoverLineColor;
+            }
+            else
+            {
+                cellImage.color = errorColor;
+            }
         }
     }
 
@@ -150,8 +162,15 @@ public class SudokuCell : MonoBehaviour
     {
         if (cellImage != null)
         {
-            cellImage.color = originalColor;
             isError = false;
+            if (isHovered)
+            {
+                cellImage.color = isCenterHovered ? hoverCenterColor : hoverLineColor;
+            }
+            else
+            {
+                cellImage.color = originalColor;
+            }
         }
     }
 
@@ -179,7 +198,63 @@ public class SudokuCell : MonoBehaviour
 
     private void ResetHighlight()
     {
-        if (!isError && cellImage != null)
+        if (cellImage == null)
+            return;
+
+        if (isError)
+        {
+            cellImage.color = isHovered ? (isCenterHovered ? hoverCenterColor : hoverLineColor) : errorColor;
+            return;
+        }
+
+        if (isHovered)
+        {
+            cellImage.color = isCenterHovered ? hoverCenterColor : hoverLineColor;
+        }
+        else
+        {
             cellImage.color = originalColor;
+        }
+    }
+
+    public void ApplyHoverHighlight(Color lineColor, Color centerColor, bool isCenter)
+    {
+        if (cellImage == null)
+            return;
+
+        isHovered = true;
+        isCenterHovered = isCenter;
+        hoverLineColor = lineColor;
+        hoverCenterColor = centerColor;
+
+        cellImage.color = isCenter ? centerColor : lineColor;
+    }
+
+    public void ClearHoverHighlight()
+    {
+        if (cellImage == null)
+            return;
+
+        isHovered = false;
+        isCenterHovered = false;
+
+        if (isError)
+        {
+            cellImage.color = errorColor;
+        }
+        else
+        {
+            cellImage.color = originalColor;
+        }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        board?.HighlightRowAndColumn(row, col, this);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        board?.OnCellHoverExit(this);
     }
 }
