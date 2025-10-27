@@ -6,20 +6,20 @@ using UnityEngine.SceneManagement;
 public class WinController : MonoBehaviour
 {
     [Header("UI References")]
-    [SerializeField] private TMP_Text titleBest;     // "All-Time New Best Score" (để inactive sẵn)
-    [SerializeField] private TMP_Text resultText;    // "You Win!" / "Game Over"
-    [SerializeField] private TMP_Text scoreText;     // Điểm ván này
-    [SerializeField] private TMP_Text bestValue;     // Best All-Time
-    [SerializeField] private TMP_Text mistakesText;  // "Mistakes x/3" (optional)
-    [SerializeField] private TMP_Text timeText;      // "Time 00:00"   (optional)
+    [SerializeField] private TMP_Text titleBest;     // banner “All-Time New Best Score”
+    [SerializeField] private TMP_Text resultText;    // “All-Time New Best” (first/newbest) / “Excellent!”
+    [SerializeField] private TMP_Text scoreText;     // điểm ván này
+    [SerializeField] private TMP_Text bestValue;     // best all-time
+    [SerializeField] private TMP_Text mistakesText;  // optional
+    [SerializeField] private TMP_Text timeText;      // optional
 
     [Header("Buttons")]
-    [SerializeField] private Button newGameButton;   // Quay lại scene chơi (SudokuPlay)
-    [SerializeField] private Button menuButton;      // Về MainMenu (nếu có)
+    [SerializeField] private Button newGameButton;
+    [SerializeField] private Button menuButton;
 
     [Header("FX (optional)")]
     [SerializeField] private ParticleSystem confetti;
-    [SerializeField] private AudioSource fanfare;    // âm chúc mừng nếu muốn
+    [SerializeField] private AudioSource fanfare;
 
     [Header("Scene Names")]
     [SerializeField] private string playSceneName = "SudokuPlay";
@@ -27,38 +27,37 @@ public class WinController : MonoBehaviour
 
     private void Start()
     {
-        // Đọc dữ liệu snapshot từ GameStats
-        int score = GameStats.Score;
-        int best = GameStats.HighScore;         // đã chốt từ GameStatsManager
-        int mistakes = GameStats.Mistakes;
-        float playTime = GameStats.PlayTime;          // (alias cho ElapsedSec)
-        bool isWin = GameStats.IsWin;
-        bool isNewBest = GameStats.IsNewBest;
-        string diff = string.IsNullOrEmpty(GameStats.Difficulty) ? "Easy" : GameStats.Difficulty;
+        int   score     = GameStats.Score;
+        int   best      = GameStats.HighScore;
+        int   mistakes  = GameStats.Mistakes;
+        float playTime  = GameStats.PlayTime;
+        bool  isNewBest = GameStats.IsNewBest;
+        string diff     = string.IsNullOrEmpty(GameStats.Difficulty) ? "Easy" : GameStats.Difficulty;
 
-        // Fallback: nếu vào trực tiếp WinScene khi test, lấy best từ PlayerPrefs
+        // Fallback khi mở trực tiếp WinScene
         if (best <= 0)
         {
-            // nếu team bạn tách best theo độ khó, đổi key ở đây
-            string key = "HighScore"; // hoặc $"HighScore_{diff}"
+            string key = PlayerPrefs.HasKey($"HighScore_{diff}") ? $"HighScore_{diff}" : "HighScore";
             best = PlayerPrefs.GetInt(key, 0);
         }
 
-        // ==== Hiển thị ====
-        if (resultText) resultText.text = isWin ? "You Win!" : "Game Over";
-        if (scoreText) scoreText.text = score.ToString("N0");
-        if (bestValue) bestValue.text = best.ToString("N0");
-        if (mistakesText) mistakesText.text = $"Mistakes {mistakes}";
-        if (timeText) timeText.text = FormatTime(playTime);
-
+        // ===== HIỂN THỊ =====
+        // Khi là lần đầu / kỷ lục mới → hiện banner + lời “All-Time New Best”
+        // Ngược lại → chỉ hiện “Excellent!”
         if (titleBest) titleBest.gameObject.SetActive(isNewBest);
+        if (resultText) resultText.text = isNewBest ? "All-Time New Best" : "Excellent!";
+
+        if (scoreText)   scoreText.text   = score.ToString("N0");
+        if (bestValue)   bestValue.text   = best.ToString("N0");
+        if (mistakesText) mistakesText.text = $"Mistakes {mistakes}";
+        if (timeText)    timeText.text    = FormatTime(playTime);
+
         if (isNewBest)
         {
             if (confetti) confetti.Play();
-            if (fanfare) fanfare.Play();
+            if (fanfare)  fanfare.Play();
         }
 
-        // ==== Buttons ====
         if (newGameButton)
             newGameButton.onClick.AddListener(() =>
             {
@@ -70,8 +69,8 @@ public class WinController : MonoBehaviour
             menuButton.onClick.AddListener(() =>
             {
                 Time.timeScale = 1f;
-                if (!string.IsNullOrEmpty(menuSceneName))
-                    SceneManager.LoadScene(menuSceneName);
+                if (!string.IsNullOrEmpty("MainMenu"))
+                    SceneManager.LoadScene("MainMenu");
             });
     }
 
