@@ -62,15 +62,15 @@ public class WinController : MonoBehaviour
             newGameButton.onClick.AddListener(() =>
             {
                 Time.timeScale = 1f;
-                SceneManager.LoadScene(playSceneName);
+                SceneManager.LoadScene("LevelSelect");
             });
 
         if (menuButton)
             menuButton.onClick.AddListener(() =>
             {
                 Time.timeScale = 1f;
-                if (!string.IsNullOrEmpty(menuSceneName))
-                    SceneManager.LoadScene(menuSceneName);
+                if (!string.IsNullOrEmpty("MainMenu"))
+                    SceneManager.LoadScene("MainMenu");
             });
     }
 
