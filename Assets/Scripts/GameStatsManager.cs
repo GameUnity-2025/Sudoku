@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.UI; // ✅ Thêm để dùng Image
 
 public class GameStatsManager : MonoBehaviour
 {
@@ -12,7 +13,10 @@ public class GameStatsManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI mistakesText;
     [SerializeField] private TextMeshProUGUI currentScoreText;
     [SerializeField] private TextMeshProUGUI finalScoreText;
-    [SerializeField] private GameObject pauseButton;
+    [SerializeField] private GameObject pauseButton;          // Nút Pause (GameObject)
+    [SerializeField] private Image pauseButtonImage;          // ✅ Image component để đổi icon
+    [SerializeField] private Sprite pauseSprite;              // ✅ Ảnh pause.png
+    [SerializeField] private Sprite playSprite;               // ✅ Ảnh playic.png
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject inputRoot;
 
@@ -23,9 +27,9 @@ public class GameStatsManager : MonoBehaviour
 
     [Header("Scenes & Flow")]
     [SerializeField] private string playSceneName = "SudokuPlay";
-    [SerializeField] private string winSceneName  = "WinScene"; // hoặc "WinScense" nếu bạn giữ tên cũ
+    [SerializeField] private string winSceneName = "WinScene";
     [SerializeField] private string menuSceneName = "MainMenu";
-    [SerializeField] private float  winSceneDelaySeconds = 0.7f;
+    [SerializeField] private float winSceneDelaySeconds = 0.7f;
 
     // runtime
     private float playTime = 0f;
@@ -55,6 +59,16 @@ public class GameStatsManager : MonoBehaviour
 
         Time.timeScale = 1f;
         if (gameOverPanel) gameOverPanel.SetActive(false);
+
+        // ✅ Khởi tạo icon Pause
+        if (pauseButtonImage == null && pauseButton != null)
+        {
+            pauseButtonImage = pauseButton.GetComponent<Image>();
+        }
+        if (pauseButtonImage != null && pauseSprite != null)
+        {
+            pauseButtonImage.sprite = pauseSprite; // Mặc định icon pause khi bắt đầu game
+        }
     }
 
     private void Update()
@@ -74,11 +88,11 @@ public class GameStatsManager : MonoBehaviour
         switch (difficulty)
         {
             case "Medium": baseScore = 2000; break;
-            case "Hard":   baseScore = 3000; break;
+            case "Hard": baseScore = 3000; break;
             case "Easy":
-            default:       baseScore = 1000; break;
+            default: baseScore = 1000; break;
         }
-        const int maxTime = 600; // 10 minutes
+        const int maxTime = 600;
         int timeBonus = Mathf.Max(0, (int)(maxTime - playTime));
         int mistakePenalty = mistakeCount * 1000;
         return Mathf.Max(0, baseScore + timeBonus - mistakePenalty);
@@ -108,11 +122,10 @@ public class GameStatsManager : MonoBehaviour
 
         currentScore = CalculateScore();
 
-        // --- first-play detection + new best ---
         string key = GetHighScoreKey();
-        bool   hadBestBefore = PlayerPrefs.HasKey(key);   // lần đầu sẽ = false
-        int    prevBest      = PlayerPrefs.GetInt(key, 0);
-        bool   isNewBest     = !hadBestBefore || currentScore > prevBest;
+        bool hadBestBefore = PlayerPrefs.HasKey(key);
+        int prevBest = PlayerPrefs.GetInt(key, 0);
+        bool isNewBest = !hadBestBefore || currentScore > prevBest;
 
         if (isNewBest)
         {
@@ -122,23 +135,21 @@ public class GameStatsManager : MonoBehaviour
         }
         else
         {
-            highScore = prevBest; // giữ best cũ
+            highScore = prevBest;
         }
 
         UpdateAllTimeUI();
         ShowFinalScore();
 
-        // snapshot cho WinScene
-        GameStats.Score      = currentScore;
-        GameStats.HighScore  = highScore;
-        GameStats.Mistakes   = mistakeCount;
-        GameStats.PlayTime   = playTime;
+        GameStats.Score = currentScore;
+        GameStats.HighScore = highScore;
+        GameStats.Mistakes = mistakeCount;
+        GameStats.PlayTime = playTime;
         GameStats.Difficulty = difficulty;
-        GameStats.IsWin      = true;
-        GameStats.IsNewBest  = isNewBest;
+        GameStats.IsWin = true;
+        GameStats.IsNewBest = isNewBest;
 
         StartCoroutine(LoadWinSceneRealtime(winSceneDelaySeconds));
-        Debug.Log($"🎉 Game Completed | Score: {currentScore} | High Score: {highScore} | FirstPlay={(!hadBestBefore)} | NewBest={isNewBest}");
     }
 
     private void GameOver()
@@ -150,16 +161,15 @@ public class GameStatsManager : MonoBehaviour
         ShowFinalScore();
         if (gameOverPanel) gameOverPanel.SetActive(true);
 
-        GameStats.Score      = 0;      // hoặc currentScore, tùy bạn
-        GameStats.HighScore  = PlayerPrefs.GetInt(GetHighScoreKey(), highScore);
-        GameStats.Mistakes   = mistakeCount;
-        GameStats.PlayTime   = playTime;
+        GameStats.Score = 0;
+        GameStats.HighScore = PlayerPrefs.GetInt(GetHighScoreKey(), highScore);
+        GameStats.Mistakes = mistakeCount;
+        GameStats.PlayTime = playTime;
         GameStats.Difficulty = difficulty;
-        GameStats.IsWin      = false;
-        GameStats.IsNewBest  = false;
+        GameStats.IsWin = false;
+        GameStats.IsNewBest = false;
 
         StartCoroutine(LoadWinSceneRealtime(1f));
-        Debug.Log("❌ Game Over! Too many mistakes.");
     }
 
     private IEnumerator LoadWinSceneRealtime(float delaySeconds)
@@ -187,23 +197,40 @@ public class GameStatsManager : MonoBehaviour
         if (finalScoreText) finalScoreText.text = $"Final Score: {currentScore}";
     }
 
-    // ===== pause =====
+    // ===== pause system =====
     public void PauseGame()
     {
         if (isPaused || isGameFinished) return;
-        isPaused = true; Time.timeScale = 0f;
+        isPaused = true;
+        Time.timeScale = 0f;
+
         if (inputRoot) inputRoot.SetActive(false);
-        if (pauseButton) pauseButton.SetActive(false);
+
+        // 🔄 Đổi icon sang Play khi game bị pause
+        if (pauseButtonImage != null && playSprite != null)
+            pauseButtonImage.sprite = playSprite;
     }
+
     public void ResumeGame()
     {
         if (!isPaused || isGameFinished) return;
-        isPaused = false; Time.timeScale = 1f;
-        if (inputRoot) inputRoot.SetActive(true);
-        if (pauseButton) pauseButton.SetActive(true);
-    }
-    public void TogglePause() { if (isPaused) ResumeGame(); else PauseGame(); }
+        isPaused = false;
+        Time.timeScale = 1f;
 
+        if (inputRoot) inputRoot.SetActive(true);
+
+        // 🔄 Đổi icon về Pause khi game chạy lại
+        if (pauseButtonImage != null && pauseSprite != null)
+            pauseButtonImage.sprite = pauseSprite;
+    }
+
+    public void TogglePause()
+    {
+        if (isPaused) ResumeGame();
+        else PauseGame();
+    }
+
+    // ===== game flow =====
     public void RestartGame()
     {
         Time.timeScale = 1f;
@@ -216,19 +243,20 @@ public class GameStatsManager : MonoBehaviour
         if (!string.IsNullOrEmpty(menuSceneName)) SceneManager.LoadScene(menuSceneName);
     }
 
+    // ===== helper getters =====
     public bool CanInput() => !isPaused && !isGameFinished;
-    public int  GetMistakeCount() => mistakeCount;
-    public int  GetMaxMistakes()  => maxMistakes;
+    public int GetMistakeCount() => mistakeCount;
+    public int GetMaxMistakes() => maxMistakes;
 }
 
 // Snapshot holder
 public static class GameStats
 {
-    public static int    Score;
-    public static int    HighScore;
-    public static int    Mistakes;
-    public static float  PlayTime;
+    public static int Score;
+    public static int HighScore;
+    public static int Mistakes;
+    public static float PlayTime;
     public static string Difficulty = "Easy";
-    public static bool   IsWin;
-    public static bool   IsNewBest;
+    public static bool IsWin;
+    public static bool IsNewBest;
 }
