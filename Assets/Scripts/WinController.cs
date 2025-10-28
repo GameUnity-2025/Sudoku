@@ -7,11 +7,11 @@ public class WinController : MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] private TMP_Text titleBest;     // banner “All-Time New Best Score”
-    // [SerializeField] private TMP_Text resultText;   // “All-Time New Best” (first/newbest) / “Excellent!”
+    [SerializeField] private TMP_Text resultText;   // “All-Time New Best” (first/newbest) / “Excellent!”
     [SerializeField] private TMP_Text scoreText;     // điểm ván này
     [SerializeField] private TMP_Text bestValue;     // best all-time
-    // [SerializeField] private TMP_Text mistakesText;  // optional
-    // [SerializeField] private TMP_Text timeText;      // optional
+    [SerializeField] private TMP_Text mistakesText;  // optional
+    [SerializeField] private TMP_Text timeText;      // optional
     [SerializeField] private TMP_Text excellentText; // Thêm dòng này
 
 
@@ -21,7 +21,7 @@ public class WinController : MonoBehaviour
 
     [Header("FX (optional)")]
     [SerializeField] private ParticleSystem confetti;
-    // [SerializeField] private AudioSource fanfare;
+    [SerializeField] private AudioSource fanfare;
 
     [Header("Scene Names")]
     [SerializeField] private string playSceneName = "SudokuPlay";
