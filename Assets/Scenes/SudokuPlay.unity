@@ -422,22 +422,37 @@ PrefabInstance:
     - target: {fileID: 3898144407915382156, guid: afa8dcf11bf9f85469045b43b9c86803,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3898144407915382156, guid: afa8dcf11bf9f85469045b43b9c86803,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3898144407915382156, guid: afa8dcf11bf9f85469045b43b9c86803,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3898144407915382156, guid: afa8dcf11bf9f85469045b43b9c86803,
         type: 3}
       propertyPath: m_textInfo.pageCount
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3898144407915382156, guid: afa8dcf11bf9f85469045b43b9c86803,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3898144407915382156, guid: afa8dcf11bf9f85469045b43b9c86803,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3898144407915382156, guid: afa8dcf11bf9f85469045b43b9c86803,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 5487277337662656574, guid: afa8dcf11bf9f85469045b43b9c86803,
         type: 3}
@@ -522,22 +537,22 @@ PrefabInstance:
     - target: {fileID: 7190825647491142676, guid: afa8dcf11bf9f85469045b43b9c86803,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -291
+      value: 150.9
       objectReference: {fileID: 0}
     - target: {fileID: 7190825647491142676, guid: afa8dcf11bf9f85469045b43b9c86803,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 25
+      value: 72.8
       objectReference: {fileID: 0}
     - target: {fileID: 7190825647491142676, guid: afa8dcf11bf9f85469045b43b9c86803,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 200
+      value: 43.465424
       objectReference: {fileID: 0}
     - target: {fileID: 7190825647491142676, guid: afa8dcf11bf9f85469045b43b9c86803,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 26.360863
       objectReference: {fileID: 0}
     - target: {fileID: 7190825647491142676, guid: afa8dcf11bf9f85469045b43b9c86803,
         type: 3}
@@ -568,6 +583,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7589241424730397402, guid: afa8dcf11bf9f85469045b43b9c86803,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 41.837
+      objectReference: {fileID: 0}
+    - target: {fileID: 7589241424730397402, guid: afa8dcf11bf9f85469045b43b9c86803,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 127.13901
+      objectReference: {fileID: 0}
+    - target: {fileID: 7589241424730397402, guid: afa8dcf11bf9f85469045b43b9c86803,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 5.899
+      objectReference: {fileID: 0}
+    - target: {fileID: 7589241424730397402, guid: afa8dcf11bf9f85469045b43b9c86803,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 38.15896
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afa8dcf11bf9f85469045b43b9c86803, type: 3}
@@ -769,7 +804,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 83.99999}
+  m_AnchoredPosition: {x: 0, y: 73.00001}
   m_SizeDelta: {x: 246, y: 246}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &111108080
@@ -798,6 +833,8 @@ MonoBehaviour:
     type: 3}
   winMenu: {fileID: 429606344}
   loseText: {fileID: 412409167}
+  hoverLineColor: {r: 0.92, g: 0.96, b: 1, a: 1}
+  hoverCenterColor: {r: 0.8, g: 0.88, b: 1, a: 1}
 --- !u!114 &111108081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1755,8 +1792,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -258.09, y: 92}
-  m_SizeDelta: {x: 275.26062, y: 50}
+  m_AnchoredPosition: {x: 218.1, y: 123}
+  m_SizeDelta: {x: 174.28479, y: 22.335228}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &277739237
 MonoBehaviour:
@@ -1806,8 +1843,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1823,7 +1860,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: -1
+  m_firstOverflowCharacterIndex: 0
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -3322,8 +3359,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -326.36, y: 154.26}
-  m_SizeDelta: {x: 138.71213, y: 21.151245}
+  m_AnchoredPosition: {x: 218.1, y: 189.4}
+  m_SizeDelta: {x: 178.43332, y: 24.372692}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1048742544
 MonoBehaviour:
@@ -3389,7 +3426,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 0
+  m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -3785,8 +3822,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -258.1, y: 186.61}
-  m_SizeDelta: {x: 275.28973, y: 43.546112}
+  m_AnchoredPosition: {x: -52.8, y: 221.16}
+  m_SizeDelta: {x: 130.75027, y: 25.566433}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1111496535
 MonoBehaviour:
@@ -3836,8 +3873,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3874,7 +3911,7 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -1.0735713, w: 0}
   m_textInfo:
     textComponent: {fileID: 1111496535}
     characterCount: 10
@@ -5856,6 +5893,9 @@ MonoBehaviour:
   currentScoreText: {fileID: 0}
   finalScoreText: {fileID: 0}
   pauseButton: {fileID: 1436334389}
+  pauseButtonImage: {fileID: 0}
+  pauseSprite: {fileID: 21300000, guid: b1570b528f97f444195b7c0311bfefc8, type: 3}
+  playSprite: {fileID: 21300000, guid: dbb4e661561ba7147aedebcdbfda36ec, type: 3}
   gameOverPanel: {fileID: 177893659}
   inputRoot: {fileID: 0}
   maxMistakes: 3
@@ -6314,7 +6354,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -99.707, y: 223.38}
+  m_AnchoredPosition: {x: -160, y: 181}
   m_SizeDelta: {x: 46.58602, y: 30.004898}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1823543750
@@ -7028,8 +7068,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -300.55, y: 129.5}
-  m_SizeDelta: {x: 190.38623, y: 24.999992}
+  m_AnchoredPosition: {x: 218.1, y: 156}
+  m_SizeDelta: {x: 174.27979, y: 20.930058}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1958928010
 MonoBehaviour:
@@ -7095,7 +7135,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: -1
+  m_firstOverflowCharacterIndex: 0
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0

@@ -448,7 +448,7 @@ public class Board : MonoBehaviour
         }
     }
 
-    public void UpdatePuzzle(int row, int col, int value)
+ public void UpdatePuzzle(int row, int col, int value)
 {
     if (gameOver) return;
 
@@ -460,21 +460,32 @@ public class Board : MonoBehaviour
     if (autoCheckErrors)
         CheckAndHighlightErrors();
 
-    // ✅ Nếu nhập sai so với đáp án (và khác giá trị cũ)
-    if (grid[row, col] != 0 && value != grid[row, col] && oldValue != value)
+    // ✅ Kiểm tra lỗi: chỉ cộng Mistake khi nhập sai mới
+    // Điều kiện:
+    // 1. value != 0 (không phải là xóa / undo)
+    // 2. grid[row, col] != 0 (là ô có đáp án)
+    // 3. value != đáp án
+    // 4. oldValue != value (không phải là nhập lại số y như cũ)
+    if (value != 0 && grid[row, col] != 0 && value != grid[row, col] && oldValue != value)
     {
         GameStatsManager.instance.AddMistake();
-        if (GameStatsManager.instance.GetMistakeCount() >= 3)
+        Debug.Log($"🔴 Mistake! Nhập {value} nhưng đúng là {grid[row, col]}");
+
+        if (GameStatsManager.instance.GetMistakeCount() >= GameStatsManager.instance.GetMaxMistakes())
         {
             gameOver = true;
             loseText.SetActive(true);
-            GameStatsManager.instance.PauseGame(); // ⛔ dừng game
+            GameStatsManager.instance.PauseGame();
             Debug.Log("❌ Game Over Triggered From Board!");
             return;
         }
     }
+    else
+    {
+        Debug.Log($"🟢 No mistake. oldValue={oldValue}, newValue={value}");
+    }
 
-    // ✅ Nếu hoàn thành
+    // ✅ Kiểm tra hoàn thành toàn bộ Sudoku
     if (CheckGrid())
     {
         gameOver = true;
@@ -482,6 +493,7 @@ public class Board : MonoBehaviour
         winMenu.SetActive(true);
     }
 }
+
 
 
 
