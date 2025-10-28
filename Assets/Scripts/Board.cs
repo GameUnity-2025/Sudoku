@@ -460,23 +460,18 @@ public class Board : MonoBehaviour
     if (autoCheckErrors)
         CheckAndHighlightErrors();
 
-    // ✅ Kiểm tra lỗi: chỉ cộng Mistake khi nhập sai mới
-    // Điều kiện:
-    // 1. value != 0 (không phải là xóa / undo)
-    // 2. grid[row, col] != 0 (là ô có đáp án)
-    // 3. value != đáp án
-    // 4. oldValue != value (không phải là nhập lại số y như cũ)
+  
     if (value != 0 && grid[row, col] != 0 && value != grid[row, col] && oldValue != value)
     {
         GameStatsManager.instance.AddMistake();
-        Debug.Log($"🔴 Mistake! Nhập {value} nhưng đúng là {grid[row, col]}");
+        Debug.Log($" Mistake! Nhập {value} nhưng đúng là {grid[row, col]}");
 
         if (GameStatsManager.instance.GetMistakeCount() >= GameStatsManager.instance.GetMaxMistakes())
         {
             gameOver = true;
             loseText.SetActive(true);
             GameStatsManager.instance.PauseGame();
-            Debug.Log("❌ Game Over Triggered From Board!");
+            Debug.Log(" Game Over Triggered From Board!");
             return;
         }
     }

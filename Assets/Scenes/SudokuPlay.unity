@@ -1167,7 +1167,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 4.2359, y: -11}
+  m_AnchoredPosition: {x: 4.23584, y: -11}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &177893661
@@ -3822,8 +3822,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -52.8, y: 221.16}
-  m_SizeDelta: {x: 130.75027, y: 25.566433}
+  m_AnchoredPosition: {x: 224.33, y: 223.38}
+  m_SizeDelta: {x: 190.88962, y: 25.564907}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1111496535
 MonoBehaviour:
@@ -5890,8 +5890,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allTimeText: {fileID: 1111496535}
   mistakesText: {fileID: 277739237}
-  currentScoreText: {fileID: 0}
-  finalScoreText: {fileID: 0}
+  currentScoreText: {fileID: 1048742544}
+  finalScoreText: {fileID: 1958928010}
   pauseButton: {fileID: 1436334389}
   pauseButtonImage: {fileID: 0}
   pauseSprite: {fileID: 21300000, guid: b1570b528f97f444195b7c0311bfefc8, type: 3}
