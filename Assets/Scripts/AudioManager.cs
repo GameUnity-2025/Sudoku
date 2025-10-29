@@ -9,33 +9,38 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        // Chỉ cho phép tồn tại 1 AudioManager duy nhất
+        // Singleton — chỉ giữ lại 1 AudioManager
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Giữ lại khi đổi scene
+            DontDestroyOnLoad(gameObject);
 
+            // Lấy AudioSource
             audioSource = GetComponent<AudioSource>();
-
-            if (audioSource != null)
+            if (audioSource == null)
             {
-                audioSource.loop = true;         // Lặp nhạc
-                audioSource.playOnAwake = false; // Không tự phát khi Awake
-
-                // Nếu chưa phát thì phát nhạc
-                if (!audioSource.isPlaying && !isMuted)
-                {
-                    audioSource.Play();
-                }
+                // Nếu chưa có AudioSource → tự thêm
+                audioSource = gameObject.AddComponent<AudioSource>();
+                Debug.LogWarning("⚠ AudioSource chưa có, đã tự động thêm mới.");
             }
-            else
+
+            // Thiết lập mặc định
+            audioSource.loop = true;
+            audioSource.playOnAwake = false;
+
+            // Lấy trạng thái mute đã lưu (nếu có)
+            isMuted = PlayerPrefs.GetInt("Muted", 0) == 1;
+            ApplyMuteState();
+
+            // Chỉ phát nhạc nếu chưa mute
+            if (!audioSource.isPlaying && !isMuted)
             {
-                Debug.LogWarning("⚠ AudioManager: Không tìm thấy AudioSource trên GameObject này!");
+                audioSource.Play();
             }
         }
         else
         {
-            Destroy(gameObject); // Hủy bản trùng lặp
+            Destroy(gameObject);
             return;
         }
     }
@@ -50,29 +55,34 @@ public class AudioManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    // Khi load scene mới
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Không cần auto stop ở WinScene nữa — cho phép người chơi mute theo ý
-        if (audioSource != null && !audioSource.isPlaying && !isMuted)
+        if (audioSource != null)
         {
-            audioSource.Play();
+            ApplyMuteState();
+            if (!audioSource.isPlaying && !isMuted)
+                audioSource.Play();
         }
-
-        // Giữ đúng trạng thái mute khi đổi scene
-        audioSource.mute = isMuted;
     }
 
-    // Bật / tắt nhạc (gọi từ các nút Mute)
     public void ToggleMute()
     {
         if (audioSource == null) return;
 
         isMuted = !isMuted;
-        audioSource.mute = isMuted;
+        PlayerPrefs.SetInt("Muted", isMuted ? 1 : 0);
+        ApplyMuteState();
     }
 
-    // Trả về trạng thái mute hiện tại
+    private void ApplyMuteState()
+    {
+        if (audioSource != null)
+        {
+            audioSource.mute = isMuted;
+        }
+        AudioListener.volume = isMuted ? 0f : 1f;
+    }
+
     public bool IsMuted()
     {
         return isMuted;
