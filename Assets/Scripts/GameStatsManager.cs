@@ -19,6 +19,8 @@ public class GameStatsManager : MonoBehaviour
     [SerializeField] private Sprite playSprite;               // ✅ Ảnh playic.png
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject inputRoot;
+    [SerializeField] private GameObject pausePanel;
+
 
     [Header("Game Settings")]
     [SerializeField] private int maxMistakes = 3;
@@ -198,37 +200,49 @@ public class GameStatsManager : MonoBehaviour
     }
 
     // ===== pause system =====
-    public void PauseGame()
-    {
-        if (isPaused || isGameFinished) return;
-        isPaused = true;
-        Time.timeScale = 0f;
+   public void PauseGame()
+{
+    if (isPaused || isGameFinished) return;
+    isPaused = true;
+    Time.timeScale = 0f;
 
-        if (inputRoot) inputRoot.SetActive(false);
+    if (inputRoot) inputRoot.SetActive(false);
 
-        // 🔄 Đổi icon sang Play khi game bị pause
-        if (pauseButtonImage != null && playSprite != null)
-            pauseButtonImage.sprite = playSprite;
-    }
+    // 🔹 Hiện PausePanel
+    if (pausePanel) pausePanel.SetActive(true);
 
-    public void ResumeGame()
-    {
-        if (!isPaused || isGameFinished) return;
-        isPaused = false;
-        Time.timeScale = 1f;
+    // 🔄 Đổi icon sang Play khi game bị pause
+    if (pauseButtonImage != null && playSprite != null)
+        pauseButtonImage.sprite = playSprite;
+}
 
-        if (inputRoot) inputRoot.SetActive(true);
+public void ResumeGame()
+{
+    if (!isPaused || isGameFinished) return;
+    isPaused = false;
+    Time.timeScale = 1f;
 
-        // 🔄 Đổi icon về Pause khi game chạy lại
-        if (pauseButtonImage != null && pauseSprite != null)
-            pauseButtonImage.sprite = pauseSprite;
-    }
+    if (inputRoot) inputRoot.SetActive(true);
 
-    public void TogglePause()
-    {
-        if (isPaused) ResumeGame();
-        else PauseGame();
-    }
+    // 🔹 Ẩn PausePanel
+    if (pausePanel) pausePanel.SetActive(false);
+
+    // 🔄 Đổi icon về Pause khi game chạy lại
+    if (pauseButtonImage != null && pauseSprite != null)
+        pauseButtonImage.sprite = pauseSprite;
+}
+
+public void TogglePause()
+{
+    if (isPaused) ResumeGame();
+    else PauseGame();
+}
+
+// 🔸 Gắn vào nút "Continue" trong popup
+public void OnClickContinue()
+{
+    ResumeGame();
+}
 
     // ===== game flow =====
     public void RestartGame()
