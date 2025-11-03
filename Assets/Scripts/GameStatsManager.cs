@@ -188,11 +188,11 @@ public class GameStatsManager : MonoBehaviour
     }
     private void UpdateMistakesUI()
     {
-        if (mistakesText) mistakesText.text = $"Mistakes: {mistakeCount}/{maxMistakes}";
+        if (mistakesText) mistakesText.text = $"{mistakeCount}/{maxMistakes}";
     }
     private void UpdateAllTimeUI()
     {
-        if (allTimeText) allTimeText.text = $"All Time: {highScore}";
+        if (allTimeText) allTimeText.text = $"{highScore}";
     }
     private void ShowFinalScore()
     {
