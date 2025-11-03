@@ -245,12 +245,17 @@ public void OnClickContinue()
 }
 
     // ===== game flow =====
-    public void RestartGame()
-    {
-        Time.timeScale = 1f;
-        var s = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(s.name);
-    }
+  public void RestartGame()
+{
+    Time.timeScale = 1f;
+
+    // 🧹 Xóa dữ liệu Sudoku đã lưu để khi reload, bảng được tạo lại sạch sẽ
+    SaveSystem.ClearSave();
+
+    // 🔄 Load lại scene hiện tại
+    var s = SceneManager.GetActiveScene();
+    SceneManager.LoadScene(s.name);
+}
     public void GoToMenu()
     {
         Time.timeScale = 1f;
