@@ -455,23 +455,18 @@ public class Board : MonoBehaviour
     int oldValue = puzzle[row, col];
     puzzle[row, col] = value;
 
-    SaveSystem.SaveBoard(grid, puzzle, difficulty);
-
-    if (autoCheckErrors)
-        CheckAndHighlightErrors();
-
-  
+    // ✅ Kiểm tra sai ngay sau khi nhập
     if (value != 0 && grid[row, col] != 0 && value != grid[row, col] && oldValue != value)
     {
         GameStatsManager.instance.AddMistake();
-        Debug.Log($" Mistake! Nhập {value} nhưng đúng là {grid[row, col]}");
+        Debug.Log($"❌ Mistake! Nhập {value} nhưng đúng là {grid[row, col]}");
 
         if (GameStatsManager.instance.GetMistakeCount() >= GameStatsManager.instance.GetMaxMistakes())
         {
             gameOver = true;
             loseText.SetActive(true);
             GameStatsManager.instance.PauseGame();
-            Debug.Log(" Game Over Triggered From Board!");
+            Debug.Log("🔴 Game Over Triggered From Board!");
             return;
         }
     }
@@ -480,7 +475,13 @@ public class Board : MonoBehaviour
         Debug.Log($"🟢 No mistake. oldValue={oldValue}, newValue={value}");
     }
 
-    // ✅ Kiểm tra hoàn thành toàn bộ Sudoku
+    // ✅ Sau khi xử lý logic thì mới lưu và highlight
+    SaveSystem.SaveBoard(grid, puzzle, difficulty);
+
+    if (autoCheckErrors)
+        CheckAndHighlightErrors();
+
+    // ✅ Kiểm tra hoàn thành Sudoku
     if (CheckGrid())
     {
         gameOver = true;
@@ -488,6 +489,7 @@ public class Board : MonoBehaviour
         winMenu.SetActive(true);
     }
 }
+
 
 
 
