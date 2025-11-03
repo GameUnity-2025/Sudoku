@@ -10,6 +10,7 @@ public class GameStatsManager : MonoBehaviour
 
     [Header("UI References")]
     [SerializeField] private TextMeshProUGUI allTimeText;
+    [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI mistakesText;
     [SerializeField] private TextMeshProUGUI currentScoreText;
     [SerializeField] private TextMeshProUGUI finalScoreText;
@@ -80,6 +81,8 @@ public class GameStatsManager : MonoBehaviour
             playTime += Time.deltaTime;
             currentScore = CalculateScore();
             UpdateCurrentScoreUI();
+            UpdateTimerUI();
+
         }
     }
 
@@ -198,6 +201,17 @@ public class GameStatsManager : MonoBehaviour
     {
         if (finalScoreText) finalScoreText.text = $"Final Score: {currentScore}";
     }
+    private void UpdateTimerUI()
+{
+    if (timerText == null) return;
+
+    int totalSeconds = Mathf.FloorToInt(playTime);
+    int minutes = totalSeconds / 60;
+    int seconds = totalSeconds % 60;
+
+    timerText.text = $"{minutes:00}:{seconds:00}";
+}
+
 
     // ===== pause system =====
    public void PauseGame()
@@ -267,6 +281,7 @@ public void OnClickContinue()
     public int GetMistakeCount() => mistakeCount;
     public int GetMaxMistakes() => maxMistakes;
 }
+
 
 // Snapshot holder
 public static class GameStats
