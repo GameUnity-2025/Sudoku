@@ -171,7 +171,7 @@ public class GameStatsManager : MonoBehaviour
         GameStats.IsWin = false;
         GameStats.IsNewBest = false;
 
-        StartCoroutine(LoadWinSceneRealtime(1f));
+       
     }
 
     private IEnumerator LoadWinSceneRealtime(float delaySeconds)
