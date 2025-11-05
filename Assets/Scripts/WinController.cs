@@ -23,7 +23,7 @@ public class WinController : MonoBehaviour
     [SerializeField] private AudioSource fanfare;
 
     [Header("Scene Names")]
-    [SerializeField] private string playSceneName = "SudokuPlay";
+    [SerializeField] private string playSceneName = "LevelSelect";
     [SerializeField] private string menuSceneName = "MainMenu";
 
     private void Start()
