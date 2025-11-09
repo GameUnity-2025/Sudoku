@@ -324,7 +324,7 @@ MonoBehaviour:
   confirmYesButton: {fileID: 0}
   confirmNoButton: {fileID: 0}
   confirmTextUI: {fileID: 0}
-  confirmMessage: Return to Main Menu? Your progress will be lost.
+  confirmMessage: Return to Main Menu?
 --- !u!1 &138367131
 GameObject:
   m_ObjectHideFlags: 0
