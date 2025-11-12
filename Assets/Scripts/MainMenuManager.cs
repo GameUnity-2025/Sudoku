@@ -8,12 +8,15 @@ public class MainMenuManager : MonoBehaviour
     // Kéo các Panel từ Hierarchy vào các ô này trong Inspector
     [SerializeField] private GameObject menuPanel;       // Panel chứa các nút Play, Continue, Setting, Quit
     [SerializeField] private GameObject settingsPanel;   // Panel chứa các cài đặt (sẽ tạo sau)
+    [SerializeField] private GameObject historyPanel;  
 
     void Start()
     {
         // Đảm bảo khi game bắt đầu, chỉ có menu chính được hiển thị
         menuPanel.SetActive(true);
         settingsPanel.SetActive(false);
+        if (historyPanel != null)
+    historyPanel.SetActive(false);
         // Try to auto-wire Continue button if it's present but not assigned in the Inspector
         try
         {
@@ -87,6 +90,30 @@ public class MainMenuManager : MonoBehaviour
         Application.Quit(); // Dùng Application.Quit() để thoát game khi đã build
         // SceneManager.LoadScene("LevelSelect"); // Dòng này có thể không cần thiết nữa nếu ý định là thoát game
     }
+
+    public void OpenHistoryPanel()
+{
+    menuPanel.SetActive(false);
+    if (settingsPanel != null) settingsPanel.SetActive(false);
+    if (historyPanel != null)
+    {
+        historyPanel.SetActive(true);
+        Debug.Log("Đã mở màn hình lịch sử game!");
+    }
+}
+
+public void CloseHistoryPanel()
+{
+    if (historyPanel != null)
+        historyPanel.SetActive(false);
+
+    // 🔸 Quay lại SettingsPanel thay vì MenuPanel
+    if (settingsPanel != null)
+        settingsPanel.SetActive(true);
+
+    Debug.Log("Đã quay lại màn hình cài đặt từ lịch sử!");
+}
+
 
 
 }
