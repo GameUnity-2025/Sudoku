@@ -98,6 +98,13 @@ public class MainMenuManager : MonoBehaviour
     if (historyPanel != null)
     {
         historyPanel.SetActive(true);
+        // Đảm bảo panel có HistoryPanelUI và refresh nội dung
+        var ui = historyPanel.GetComponent<HistoryPanelUI>();
+        if (ui == null)
+        {
+            ui = historyPanel.AddComponent<HistoryPanelUI>();
+        }
+        ui.Refresh();
         Debug.Log("Đã mở màn hình lịch sử game!");
     }
 }

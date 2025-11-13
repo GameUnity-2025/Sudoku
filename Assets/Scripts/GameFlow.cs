@@ -14,6 +14,17 @@ public class GameFlow : MonoBehaviour
         GameStats.Score = score;
         GameStats.PlayTime = elapsed;
 
+        // 📝 Lưu lịch sử nếu đi theo flow này
+        string difficulty = PlayerPrefs.GetString("Difficulty", "Easy");
+        try
+        {
+            HistorySystem.AddEntry(elapsed, difficulty, true, score);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"History save failed: {e.Message}");
+        }
+
         SceneManager.LoadScene("WinScene");
     }
 }

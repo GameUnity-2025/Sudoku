@@ -29,7 +29,6 @@ public class GameStatsManager : MonoBehaviour
     [SerializeField] private bool separateHighScoreByDifficulty = false;
 
     [Header("Scenes & Flow")]
-    [SerializeField] private string playSceneName = "SudokuPlay";
     [SerializeField] private string winSceneName = "WinScene";
     [SerializeField] private string menuSceneName = "MainMenu";
     [SerializeField] private float winSceneDelaySeconds = 0.7f;
@@ -154,6 +153,16 @@ public class GameStatsManager : MonoBehaviour
         GameStats.IsWin = true;
         GameStats.IsNewBest = isNewBest;
 
+        // 📝 Lưu lịch sử ván chơi (ngày & thời gian)
+        try
+        {
+            HistorySystem.AddEntry(playTime, difficulty, true, currentScore);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"History save failed: {e.Message}");
+        }
+
         StartCoroutine(LoadWinSceneRealtime(winSceneDelaySeconds));
     }
 
@@ -174,6 +183,15 @@ public class GameStatsManager : MonoBehaviour
         GameStats.IsWin = false;
         GameStats.IsNewBest = false;
 
+        // 📝 Lưu lịch sử ván chơi khi thua
+        try
+        {
+            HistorySystem.AddEntry(playTime, difficulty, false, 0);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"History save failed: {e.Message}");
+        }
        
     }
 

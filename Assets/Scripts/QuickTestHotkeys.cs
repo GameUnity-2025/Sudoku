@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 public class QuickTestHotkeys : MonoBehaviour
 {
     [Header("Scene names (đúng với project bạn)")]
-    [SerializeField] string playScene = "SudokuPlay";
     [SerializeField] string winScene = "WinScene";
 
     void Update()
@@ -55,6 +54,16 @@ public class QuickTestHotkeys : MonoBehaviour
         GameStats.HighScore = Mathf.Max(PlayerPrefs.GetInt("HighScore", 0), newScore);
         GameStats.IsWin = win;
         GameStats.IsNewBest = newBest;
+
+        // 📝 Bảo đảm có lịch sử ngay cả khi đi đường tắt F5 (không qua GameStatsManager)
+        try
+        {
+            HistorySystem.AddEntry(GameStats.PlayTime, GameStats.Difficulty, win, newScore);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"History save failed (F5 path): {e.Message}");
+        }
 
         Time.timeScale = 1f;
         SceneManager.LoadScene(winScene);
