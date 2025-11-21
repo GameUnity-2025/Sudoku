@@ -694,6 +694,57 @@ public int[,] GetSolutionGrid()
         hoverHighlightedCells.Clear();
         currentHoveredCell = null;
     }
+public bool RevealRandomHint()
+    {
+        List<(int r, int c)> emptyCells = new List<(int, int)>();
+
+        // Tìm tất cả ô trống trong puzzle
+        for (int r = 0; r < 9; r++)
+        {
+            for (int c = 0; c < 9; c++)
+            {
+                if (puzzle[r, c] == 0)
+                {
+                    emptyCells.Add((r, c));
+                }
+            }
+        }
+
+        // Không có ô nào để gợi ý
+        if (emptyCells.Count == 0)
+        {
+            return false;
+        }
+
+        // Chọn ngẫu nhiên 1 ô trống
+        var chosen = emptyCells[Random.Range(0, emptyCells.Count)];
+
+        int row = chosen.r;
+        int col = chosen.c;
+
+        int correctValue = grid[row, col]; // Lấy đáp án đúng từ grid
+
+        // Cập nhật puzzle
+        puzzle[row, col] = correctValue;
+
+        // Cập nhật UI cell
+        if (allCells[row, col] != null)
+        {
+            allCells[row, col].SetValue(correctValue);
+        }
+
+        // Lưu game lại để tránh mất dữ liệu
+        SaveSystem.SaveBoard(grid, puzzle, difficulty);
+
+        // Tự động check lỗi (nếu đang bật)
+        if (autoCheckErrors)
+        {
+            CheckAndHighlightErrors();
+        }
+
+        return true;
+    }
+
 
 
 }
